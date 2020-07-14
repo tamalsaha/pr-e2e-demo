@@ -13,10 +13,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Env
+        run: |
+          env | sort | grep GIT
+
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
       - name: Checkout pr
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.issue.number }}
         run: |
           curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s 2.14.1
           sudo mv bin/hub /usr/local/bin
-          hub pr checkout ${{ github.event.issue.number }}
+          hub pr checkout $PR_NUMBER
+          ./hack/scripts/e2e.sh
