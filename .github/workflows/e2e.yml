@@ -29,6 +29,8 @@ jobs:
         run: |
           curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s 2.14.1
           sudo mv bin/hub /usr/local/bin
-          pr_approved=$(hub api /repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/reviews | jq --raw-output '[.[].state] | contains(["APPROVED"])')
-          [ $pr_approved == "true" ] || { echo "pr $PR_NUMBER is not approved!"; exit 1; }
+          # pr_state=$(hub api /repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/reviews | jq --raw-output '[.[].state] | contains(["APPROVED"])')
+          # [ $pr_approved == "true" ] || { echo "pr $PR_NUMBER is not approved!"; exit 1; }
+          pr_state=$(hub api /repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/reviews | jq --raw-output '[.[].state] | last')
+          [ $pr_state == "APPROVED" ] || { echo "pr $PR_NUMBER is not approved!"; exit 1; }
           hub pr checkout $PR_NUMBER
