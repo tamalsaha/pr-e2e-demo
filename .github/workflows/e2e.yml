@@ -8,7 +8,7 @@ jobs:
   build:
     name: Test
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.html_url, '/pull/') && github.event.comment.body == '/e2e'
+    if: contains(github.event.issue.html_url, '/pull/') && github.event.comment.body == '/e2e2'
 
     steps:
       - uses: actions/checkout@v2
