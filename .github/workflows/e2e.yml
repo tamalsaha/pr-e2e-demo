@@ -34,7 +34,7 @@ jobs:
           pr_state=$(hub api /repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/reviews | jq --raw-output '[.[].state] | last')
           [ $pr_state == "APPROVED" ] || {
             echo "pr $PR_NUMBER is not approved!";
-            hub api /repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments -f body="pr $PR_NUMBER is not approved!";
+            hub api /repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments -f body="Failed to run e2e tests becuase PR is not approved!";
             exit 1; 
           }
           hub pr checkout $PR_NUMBER
